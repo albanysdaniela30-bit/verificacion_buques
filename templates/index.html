@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Verificación de Buques</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container-principal">
+
+    <!-- Botón inicio de sesión arriba a la derecha -->
+<div class="top-right">
+    <a href="{{ url_for('login') }}" class="btn">Iniciar Sesión</a>
+</div>
+
+<!-- Encabezado institucional -->
+<div class="header">
+    <h2>REPÚBLICA BOLIVARIANA DE VENEZUELA</h2>
+    <h2>MINISTERIO DEL TRANSPORTE</h2>
+    <h2>AUTORIDAD ACUÁTICA DE VENEZUELA</h2>
+</div>
+
+    <!-- Logo del buque -->
+    <div class="logo-container">
+        <img src="{{ url_for('static', filename='barco.png') }}" class="logo">
+    </div>
+
+    <!-- Título -->
+    <h3 class="titulo-principal">VERIFICACIÓN DE CERTIFICADOS EXPEDIDOS A LOS BUQUES DE VENEZUELA</h3>
+
+    <!-- Formulario búsqueda buque -->
+    <form method="POST" class="form-busqueda">
+        <input type="text" name="matricula" placeholder="Ej: RBDV-PE-0001" required>
+        <button type="submit">Buscar</button>
+    </form>
+
+    <!-- Resultados en tarjeta -->
+    {% if resultado %}
+    <div class="resultado">
+        <p><strong>Nombre del Buque:</strong> {{ resultado.nombre }}</p>
+        <p><strong>Matrícula:</strong> {{ resultado.matricula }}</p>
+        <p><strong>Tipo de Buque:</strong> {{ resultado.tipo_buque }}</p>
+        <p><strong>Propietario:</strong> {{ resultado.propietario }}</p>
+        <p><strong>Cédula:</strong> {{ resultado.cedula }}</p>
+        <p><strong>Documento:</strong> {{ resultado.documento }}</p>
+        <p><strong>Fecha de Expedición:</strong> {{ resultado.fecha_expedicion }}</p>
+        <p><strong>Fecha de Refrendo:</strong> {{ resultado.fecha_refrendo }}</p>
+        <p><strong>Fecha de Vencimiento:</strong> {{ resultado.fecha_vencimiento }}</p>
+        <p><strong>Estado:</strong> {{ resultado.estado }}</p>
+        <p style="color:red;"><strong>{{ nota_refrendo }}</strong></p>
+    </div>
+    {% endif %}
+
+    <!-- Mensajes flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+</div>
+</body>
+</html>

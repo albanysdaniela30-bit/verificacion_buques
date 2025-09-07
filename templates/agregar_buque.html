@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>{% if buque %}Editar Buque{% else %}Agregar Nuevo Buque{% endif %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container-principal">
+
+    <!-- Botón cerrar sesión -->
+    <div class="top-right">
+        <a href="{{ url_for('logout') }}" class="btn">Cerrar Sesión</a>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="header">
+        <h2>REPÚBLICA BOLIVARIANA DE VENEZUELA</h2>
+        <h2>MINISTERIO DEL TRANSPORTE</h2>
+        <h2>AUTORIDAD ACUÁTICA DE VENEZUELA</h2>
+    </div>
+
+    <!-- Logo -->
+    <div class="logo-container">
+        <img src="{{ url_for('static', filename='barco.png') }}" class="logo">
+    </div>
+
+    <h3 class="titulo-principal">{% if buque %}Editar Buque{% else %}Agregar Nuevo Buque{% endif %}</h3>
+
+    <!-- Formulario -->
+    <form method="POST" class="form-buque">
+        <label>Nombre del Buque</label>
+        <input type="text" name="nombre" value="{{ buque.nombre if buque else '' }}" required>
+
+        <label>Matrícula</label>
+        <input type="text" name="matricula" value="{{ buque.matricula if buque else '' }}" {% if buque %}readonly{% endif %} required>
+
+        <label>Propietario</label>
+        <input type="text" name="propietario" value="{{ buque.propietario if buque else '' }}" required>
+
+        <label>Cédula</label>
+        <input type="text" name="cedula" value="{{ buque.cedula if buque else '' }}" required>
+
+        <label>Fecha de Expedición</label>
+        <input type="date" name="fecha_expedicion" value="{{ buque.fecha_expedicion if buque else '' }}" required>
+
+        <label>Fecha de Refrendo</label>
+        <input type="date" name="fecha_refrendo" value="{{ buque.fecha_refrendo if buque else '' }}">
+
+        <label>Fecha de Vencimiento</label>
+        <input type="date" name="fecha_vencimiento" value="{{ buque.fecha_vencimiento if buque else '' }}" required>
+
+        <button type="submit" class="btn">{% if buque %}Actualizar{% else %}Agregar{% endif %}</button>
+    </form>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+</div>
+</body>
+</html>

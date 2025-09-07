@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard - Autoridad Acuática</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container-principal">
+
+    <!-- Botón cerrar sesión arriba a la derecha -->
+<div class="top-right">
+    <a href="{{ url_for('logout') }}" class="btn">Cerrar Sesión</a>
+</div>
+
+<!-- Encabezado institucional -->
+<div class="header">
+    <h2>REPÚBLICA BOLIVARIANA DE VENEZUELA</h2>
+    <h2>MINISTERIO DEL TRANSPORTE</h2>
+    <h2>AUTORIDAD ACUÁTICA DE VENEZUELA</h2>
+</div>
+
+    <!-- Logo -->
+    <div class="logo-container">
+        <img src="{{ url_for('static', filename='barco.png') }}" class="logo">
+    </div>
+
+    <h3 class="titulo-principal">BASE DE DATOS DE BUQUES</h3>
+
+    <!-- Botón añadir nuevo buque separado 1cm por encima de búsqueda -->
+    <div style="margin-bottom:1cm;">
+        <a href="{{ url_for('agregar_buque') }}" class="btn">Añadir Nuevo Buque</a>
+    </div>
+
+    <!-- Controles de búsqueda y filtro alineados a la derecha -->
+    <div style="display:flex; justify-content:flex-end; gap:20px; margin-bottom:20px;">
+        <!-- Buscar por matrícula o cédula -->
+        <form method="GET" style="display:flex; align-items:center;">
+            <input type="text" name="buscar" placeholder="Ingrese matrícula o cédula" style="padding:8px; border-radius:5px; border:1px solid #ccc;">
+            <button type="submit" class="btn-buscar" style="margin-left:0.5cm;">Buscar</button>
+        </form>
+
+        <!-- Filtro por tipo de buque -->
+        <form method="GET" style="display:flex; align-items:center;">
+            <select name="tipo_buque" style="padding:8px; border-radius:5px; border:1px solid #ccc; margin-right:0.3cm;">
+                <option value="">Todos los tipos</option>
+                {% for tipo in tipos_buque %}
+                    <option value="{{ tipo }}" {% if request.args.get('tipo_buque')==tipo %}selected{% endif %}>{{ tipo }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn-buscar">Filtrar</button>
+        </form>
+    </div>
+
+    <!-- Tabla de buques -->
+    <table class="tabla-buques">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Matrícula</th>
+                <th>Propietario</th>
+                <th>Cédula</th>
+                <th>Documento</th>
+                <th>Fecha Expedición</th>
+                <th>Fecha Refrendo</th>
+                <th>Fecha Vencimiento</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for buque in buques %}
+            <!-- Se alternan filas azul claro y blanco con loop.cycle -->
+            <tr class="{{ loop.cycle('fila-azul', 'fila-blanca') }}">
+                <td>{{ buque.nombre }}</td>
+                <td>{{ buque.matricula }}</td>
+                <td>{{ buque.propietario }}</td>
+                <td>{{ buque.cedula }}</td>
+                <td>{{ buque.documento }}</td>
+                <td>{{ buque.fecha_expedicion }}</td>
+                <td>{{ buque.fecha_refrendo or "No realizado" }}</td>
+                <td>{{ buque.fecha_vencimiento }}</td>
+                <td>
+                    <a href="{{ url_for('editar_buque', id=buque.id) }}" class="btn">Editar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+</div>
+</body>
+</html>

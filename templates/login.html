@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Login - Autoridad Acuática</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container-principal">
+
+    <!-- Encabezado -->
+    <div class="header">
+        <h2>REPÚBLICA BOLIVARIANA DE VENEZUELA</h2>
+        <h2>MINISTERIO DEL TRANSPORTE</h2>
+        <h2>AUTORIDAD ACUÁTICA DE VENEZUELA</h2>
+    </div>
+
+    <!-- Logo -->
+    <div class="logo-container">
+        <img src="{{ url_for('static', filename='barco.png') }}" class="logo">
+    </div>
+
+    <h3 class="titulo-principal">INICIO DE SESIÓN</h3>
+
+    <!-- Formulario de login -->
+    <form method="POST" class="form-buque" style="max-width: 400px; margin: 0 auto;">
+        <!-- Usuario -->
+        <div style="display:flex; align-items:center; margin-bottom:15px;">
+            <label style="margin-right:10px; min-width:70px;">Usuario</label>
+            <input type="text" name="usuario" placeholder="Ingrese su usuario" style="flex:1; padding:10px; border-radius:8px; border:1px solid #ccc;" required>
+        </div>
+
+        <!-- Contraseña -->
+        <div style="display:flex; align-items:center; margin-bottom:20px;">
+            <label style="margin-right:10px; min-width:70px;">Contraseña</label>
+            <input type="password" name="contrasena" placeholder="Ingrese su contraseña" style="flex:1; padding:10px; border-radius:8px; border:1px solid #ccc;" required>
+        </div>
+
+        <!-- Botón login centrado -->
+        <div style="text-align:center;">
+            <button type="submit" class="btn">Iniciar Sesión</button>
+        </div>
+
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+    </form>
+
+</div>
+</body>
+</html>
