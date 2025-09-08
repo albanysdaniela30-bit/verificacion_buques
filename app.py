@@ -214,7 +214,7 @@ def agregar_buque():
         fecha_vencimiento = request.form.get("fecha_vencimiento")
         siglas = {
             "PE":"PESCA","CA":"CARGA","SE":"SERVICIO","RE":"RECREO",
-            "TU":"TURISMO","AC":"ACCESORIO DE NAVEGACIÓN","PJ":"PASAJES","DE":"DEPORTIVO"
+            "TU":"TURISMO","AC":"ACCESORIO DE NAVEGACIÓN","PJ":"PASAJE","DE":"DEPORTIVO"
         }
         try:
             codigo = matricula.split("-")[1]
