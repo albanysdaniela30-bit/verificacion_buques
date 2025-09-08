@@ -100,30 +100,30 @@ def verificar_refrendo(fecha_expedicion, fecha_refrendo, fecha_vencimiento=None)
         fecha_venc = fecha_exped + timedelta(days=365+90)  # fallback si no hay vencimiento
     
     # Calcular límite de refrendo (expedición + 1 año + 90 días)
-    limite = fecha_exped + timedelta(days=365+90)
+    limite_refrendo = fecha_exped + timedelta(days=365+90)  # 1 año + 3 meses
     
     if not fecha_refrendo:
-        # Sin refrendo, verificar si ya pasó el límite
-        if hoy > limite:
+        if hoy > fecha_venc:
             return "Vencido", "Debe renovar su Licencia de Navegación"
-        else:
+        elif hoy >= fecha_exped + timedelta(days=365):
+            # Solo después de un año desde expedición y hasta la prórroga de 3 meses
             return "Vigente", "Debe realizar el reconocimiento anual (refrendo) ante la autoridad acuática"
+        else:
+            # Antes de cumplir 1 año, no mostrar nota de refrendo
+            return "Vigente", ""
     else:
         fecha_ref = datetime.strptime(fecha_refrendo, "%Y-%m-%d").date()
-        
-        # Estado según fecha de vencimiento real
         if hoy > fecha_venc:
             estado = "Vencido"
-            nota = "Debe renovar su Licencia de Navegación"  # Ajuste solicitado
+            nota = "Debe renovar su Licencia de Navegación"
         else:
             estado = "Vigente"
-            # Nota según refrendo
-            if fecha_ref <= limite:
+            if fecha_ref <= limite_refrendo:
                 nota = "Refrendo dentro del plazo"
             else:
                 nota = "Refrendo fuera de plazo"
-        
         return estado, nota
+
 
 # ----------------- Página Principal -----------------
 @app.route("/", methods=["GET","POST"])
