@@ -86,24 +86,45 @@ def cargar_excel():
     conn.close()
 
 # ----------------- Verificar Refrendo -----------------
-def verificar_refrendo(fecha_expedicion, fecha_refrendo):
+def verificar_refrendo(fecha_expedicion, fecha_refrendo, fecha_vencimiento=None):
     hoy = datetime.today().date()
     if not fecha_expedicion:
         return "No válido", "Fecha de expedición inválida"
+    
     fecha_exped = datetime.strptime(fecha_expedicion, "%Y-%m-%d").date()
+    
+    # Convertir fecha de vencimiento si existe
+    if fecha_vencimiento:
+        fecha_venc = datetime.strptime(fecha_vencimiento, "%Y-%m-%d").date()
+    else:
+        fecha_venc = fecha_exped + timedelta(days=365+90)  # fallback si no hay vencimiento
+    
+    # Calcular límite de refrendo (expedición + 1 año + 90 días)
+    limite = fecha_exped + timedelta(days=365+90)
+    
     if not fecha_refrendo:
-        limite = fecha_exped + timedelta(days=365+90)
+        # Sin refrendo, verificar si ya pasó el límite
         if hoy > limite:
-            return "No válido", "No realizó el reconocimiento anual, su certificado ya no es válido, debe renovar"
+            return "Vencido", "No realizó el reconocimiento anual, su certificado ya no es válido, debe renovar"
         else:
             return "Vigente", "Debe realizar el reconocimiento anual (refrendo) ante la autoridad acuática"
     else:
         fecha_ref = datetime.strptime(fecha_refrendo, "%Y-%m-%d").date()
-        limite = fecha_exped + timedelta(days=365+90)
-        if fecha_ref > limite:
-            return "No válido", "Refrendo fuera de plazo, certificado no válido"
+        
+        # Nota según refrendo
+        if fecha_ref <= limite:
+            nota = "Refrendo dentro del plazo"
         else:
-            return "Vigente", "Refrendo dentro del plazo"
+            nota = "Refrendo fuera de plazo"
+        
+        # Estado según fecha de vencimiento real
+        if hoy > fecha_venc:
+            estado = "Vencido"
+        else:
+            estado = "Vigente"
+        
+        return estado, nota
+
 
 # ----------------- Página Principal -----------------
 @app.route("/", methods=["GET","POST"])
