@@ -206,3 +206,12 @@ table th {
         align-items: flex-start;
     }
 }
+.nota-verde {
+    color: green;
+    font-weight: bold;
+}
+
+.nota-roja {
+    color: red;
+    font-weight: bold;
+}

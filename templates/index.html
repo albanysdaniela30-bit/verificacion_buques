@@ -47,7 +47,13 @@
         <p><strong>Fecha de Refrendo:</strong> {{ resultado.fecha_refrendo }}</p>
         <p><strong>Fecha de Vencimiento:</strong> {{ resultado.fecha_vencimiento }}</p>
         <p><strong>Estado:</strong> {{ resultado.estado }}</p>
-        <p style="color:red;"><strong>{{ nota_refrendo }}</strong></p>
+        {% if nota_refrendo == "Refrendo dentro del plazo" %}
+    <p style="color:green;"><strong>{{ nota_refrendo }}</strong></p>
+{% else %}
+    <p style="color:red;"><strong>{{ nota_refrendo }}</strong></p>
+{% endif %}
+
+        
     </div>
     {% endif %}
 
