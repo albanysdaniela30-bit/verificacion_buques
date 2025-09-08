@@ -54,7 +54,7 @@ def cargar_excel():
             df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
     siglas = {
         "PE":"PESCA","CA":"CARGA","SE":"SERVICIO","RE":"RECREO",
-        "TU":"TURISMO","AC":"ACCESORIO DE NAVEGACIÓN","PJ":"PASAJES","DE":"DEPORTIVO"
+        "TU":"TURISMO","AC":"ACCESORIO DE NAVEGACIÓN","PJ":"PASAJE","DE":"DEPORTIVO"
     }
     tipo_list = []
     for matricula in df['matricula']:
