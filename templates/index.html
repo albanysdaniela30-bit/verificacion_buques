@@ -29,10 +29,12 @@
     <h3 class="titulo-principal">VERIFICACIÓN DE CERTIFICADOS EXPEDIDOS A LOS BUQUES DE VENEZUELA</h3>
 
     <!-- Formulario búsqueda buque -->
-    <form method="POST" class="form-busqueda">
-        <input type="text" name="matricula" placeholder="Ej: RBDV-PE-0001" required>
-        <button type="submit">Buscar</button>
-    </form>
+<form method="POST" class="form-busqueda">
+    <label for="matricula" style="margin-right: 10px; font-weight: bold;">Ingrese la matrícula del buque:</label>
+    <input type="text" id="matricula" name="matricula" placeholder="Ej: RBDV-PE-0001" required>
+    <button type="submit">Buscar</button>
+</form>
+
 
     <!-- Resultados en tarjeta -->
     {% if resultado %}
